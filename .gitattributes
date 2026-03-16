@@ -1,0 +1,82 @@
+# ── Default: auto-detect text files, normalise to LF in the repository ────────
+# Windows contributors: git will convert LF→CRLF on checkout and CRLF→LF on commit.
+* text=auto eol=lf
+
+# ── Python ────────────────────────────────────────────────────────────────────
+*.py    text eol=lf diff=python
+*.pyi   text eol=lf diff=python
+*.pyw   text eol=lf diff=python
+
+# ── GitHub Actions & general YAML ─────────────────────────────────────────────
+*.yml   text eol=lf
+*.yaml  text eol=lf
+
+# ── Shell scripts ─────────────────────────────────────────────────────────────
+*.sh    text eol=lf
+*.bash  text eol=lf
+
+# ── Make ──────────────────────────────────────────────────────────────────────
+Makefile    text eol=lf
+
+# ── JavaScript & TypeScript ───────────────────────────────────────────────────
+*.js    text eol=lf diff=javascript
+*.mjs   text eol=lf diff=javascript
+*.cjs   text eol=lf diff=javascript
+*.ts    text eol=lf diff=typescript
+*.tsx   text eol=lf diff=typescript
+*.jsx   text eol=lf diff=javascript
+
+# ── Terraform ─────────────────────────────────────────────────────────────────
+*.tf        text eol=lf
+*.tfvars    text eol=lf
+
+# ── Windows-only scripts (keep CRLF) ─────────────────────────────────────────
+*.bat   text eol=crlf
+*.cmd   text eol=crlf
+*.ps1   text eol=crlf
+
+# ── Lock files ────────────────────────────────────────────────────────────────
+uv.lock     text eol=lf
+
+# ── Config & data ─────────────────────────────────────────────────────────────
+*.cfg       text eol=lf
+*.conf      text eol=lf
+*.ini       text eol=lf
+*.toml      text eol=lf
+*.json      text eol=lf
+*.jsonc     text eol=lf
+*.xml       text eol=lf
+*.csv       text eol=lf
+*.tsv       text eol=lf
+
+# ── Documentation ─────────────────────────────────────────────────────────────
+*.md        text eol=lf
+*.rst       text eol=lf
+*.txt       text eol=lf
+*.svg       text eol=lf
+
+# ── Binary assets (no line-ending conversion, correct diffing) ────────────────
+*.png       binary
+*.jpg       binary
+*.jpeg      binary
+*.gif       binary
+*.ico       binary
+*.webp      binary
+*.pdf       binary
+*.zip       binary
+*.tar       binary
+*.gz        binary
+*.7z        binary
+*.rar       binary
+
+# ── Compiled / generated Python artefacts ─────────────────────────────────────
+*.pyc       binary
+*.pyd       binary
+*.pyo       binary
+*.whl       binary
+
+# ── Native libraries ──────────────────────────────────────────────────────────
+*.so        binary
+*.dll       binary
+*.exe       binary
+*.dylib     binary

@@ -1,0 +1,33 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find:*)",
+      "Bash(git branch:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git ls-tree:*)",
+      "Bash(git show:*)",
+      "Bash(git status:*)",
+      "Bash(uv lock:*)",
+      "Bash(uv run ruff check:*)",
+      "Bash(uv run ruff format --check:*)",
+      "Bash(uv sync:*)"
+    ],
+    "deny": [
+      "Bash(rm:*)",
+      "Bash(sudo:*)",
+      "Bash(chmod:*)",
+      "Bash(chown:*)",
+      "Bash(dd:*)",
+      "Bash(mkfs:*)",
+      "Bash(git push:*)",
+      "Bash(git commit:*)",
+      "Bash(git reset:*)",
+      "Bash(git clean:*)",
+      "Bash(git rebase:*)",
+      "Bash(git merge:*)",
+      "Bash(git tag:*)",
+      "Bash(git stash drop:*)"
+    ]
+  }
+}

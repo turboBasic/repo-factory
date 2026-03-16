@@ -1,0 +1,9 @@
+{
+  "recommendations": [
+    "editorconfig.editorconfig",
+    "github.copilot-chat",
+    "github.vscode-github-actions",
+    "ms-python.python",
+    "redhat.vscode-yaml"
+  ]
+}

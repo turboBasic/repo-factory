@@ -1,0 +1,46 @@
+root = true
+
+# ── Defaults for all files ────────────────────────────────────────────────────
+[*]
+charset = utf-8
+end_of_line = lf
+indent_size = 4
+indent_style = space
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# ── Python ────────────────────────────────────────────────────────────────────
+[*.{py,pyi,pyw}]
+max_line_length = 120
+
+# ── GitHub Actions & general YAML ─────────────────────────────────────────────
+[*.{yml,yaml}]
+indent_size = 2
+
+# ── JavaScript & TypeScript ───────────────────────────────────────────────────
+[*.{js,mjs,cjs,ts,tsx,jsx}]
+indent_size = 2
+
+# ── JSON ──────────────────────────────────────────────────────────────────────
+[*.{json,jsonc}]
+indent_size = 2
+
+# ── TOML (pyproject.toml, etc.) ───────────────────────────────────────────────
+[*.toml]
+
+# ── Terraform ─────────────────────────────────────────────────────────────────
+[*.{tf,tfvars,hcl}]
+indent_size = 2
+
+# ── Markdown & reStructuredText ───────────────────────────────────────────────
+# Trailing spaces are meaningful in Markdown (line break), so don't trim them
+[*.{md,rst}]
+trim_trailing_whitespace = false
+
+# ── Windows batch / PowerShell (must stay CRLF) ───────────────────────────────
+[*.{bat,cmd,ps1}]
+end_of_line = crlf
+
+# ── Makefiles (tabs required) ─────────────────────────────────────────────────
+[Makefile]
+indent_style = tab

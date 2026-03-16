@@ -1,0 +1,22 @@
+repos:
+  - repo: https://github.com/adrienverge/yamllint
+    rev: v1.38.0
+    hooks:
+      - id: yamllint
+
+  - repo: https://github.com/jackdewinter/pymarkdown
+    rev: v0.9.35
+    hooks:
+      - id: pymarkdown
+        args:
+          - scan
+
+  - repo: https://github.com/shellcheck-py/shellcheck-py
+    rev: v0.11.0.1
+    hooks:
+      - id: shellcheck
+
+  - repo: https://github.com/biomejs/pre-commit
+    rev: v2.4.7
+    hooks:
+      - id: biome-ci
