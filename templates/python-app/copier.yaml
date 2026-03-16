@@ -1,0 +1,38 @@
+# Copier template configuration for python-app.
+#
+# Design notes:
+# - project_slug is derived automatically from project_name so the user does
+#   not have to type it twice; they can override it if needed.
+# - python_version is the *minimum* version written into requires-python.
+# - _templates_suffix controls which files are rendered as Jinja2 templates;
+#   any file without the ".jinja" suffix is copied verbatim.
+
+_templates_suffix: .jinja
+
+# Optional: show a message when generation is complete.
+_message_after_copy: |
+  Your project is ready!
+
+  Next steps:
+    cd {{ _copier_conf.dst_path }}
+    pip install -e ".[dev]"
+    pytest
+
+project_name:
+  type: str
+  help: "Human-readable project name (e.g. Payments API)"
+
+project_slug:
+  type: str
+  help: "Python package name — lowercase, underscores only (e.g. payments_api)"
+  default: "{{ project_name | lower | replace(' ', '_') | replace('-', '_') }}"
+
+description:
+  type: str
+  help: "One-line project description"
+  default: ""
+
+python_version:
+  type: str
+  help: "Minimum Python version"
+  default: "3.12"
