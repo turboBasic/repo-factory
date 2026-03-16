@@ -1,0 +1,29 @@
+"""Smoke tests for {{ project_name }}."""
+import importlib
+import sys
+from pathlib import Path
+
+# Make src/ importable when running pytest without an editable install.
+sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
+
+
+def test_package_importable() -> None:
+    """The package must be importable."""
+    mod = importlib.import_module("{{ project_slug }}")
+    assert mod is not None
+
+
+def test_main_callable() -> None:
+    """main() must run without raising."""
+    from {{ project_slug }}.main import main
+
+    main()
+
+
+def test_module_runnable(capsys) -> None:
+    """__main__ must delegate to main() and produce output."""
+    from {{ project_slug }}.main import main
+
+    main()
+    captured = capsys.readouterr()
+    assert "{{ project_name }}" in captured.out

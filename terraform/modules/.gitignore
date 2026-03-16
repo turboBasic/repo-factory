@@ -1,0 +1,4 @@
+# antonbabenko/pre-commit-terraform creates lock files also in modules,
+# but this is not needed and causes redundant lock files committed to
+# the repository.
+.terraform.lock.hcl
