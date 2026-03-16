@@ -1,0 +1,43 @@
+# {{ project_name }}
+
+{{ description }}
+
+## Usage
+
+Run as a CLI application:
+
+```bash
+{{ project_slug }}
+```
+
+Or as a Python module:
+
+```bash
+python -m {{ project_slug }}
+```
+
+Import as a library:
+
+```python
+import {{ project_slug }}
+```
+
+## Development
+
+Install the package in editable mode with dev extras:
+
+```bash
+pip install -e ".[dev]"
+```
+
+Run the linter:
+
+```bash
+ruff check src/ tests/
+```
+
+Run tests:
+
+```bash
+pytest
+```
