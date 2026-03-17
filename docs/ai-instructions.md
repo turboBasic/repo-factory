@@ -16,8 +16,9 @@
 
 | Tool | Version / Notes |
 | --- | --- |
-| Language | Terraform |
-| Test frameworks | |
+| Primary language | Terraform (HCL) |
+| Templating | Copier (Jinja2) |
+| Test framework | pytest (Python) |
 | CI | GitHub Actions |
 
 ## Project Structure
@@ -28,15 +29,43 @@
 ```plaintext
 .claude/
 ├── settings.json
-└── skills/                       # Skills directory
+└── skills/                              # Shared AI skills
 .github/
 ├── workflows/
-│   └── conventional-commits.yml  # PR title and commit message validation
+│   ├── conventional-commits.yml         # PR title / commit message validation
+│   └── create-repo.yml                  # Manually triggered repo-factory workflow
 └── PULL_REQUEST_TEMPLATE.md
+scripts/
+└── create_repo.sh                       # Orchestrates Copier → Terraform → git push
+templates/
+└── python-app/                          # Copier template: Python src-layout project
+    ├── copier.yaml
+    ├── pyproject.toml.jinja
+    ├── README.md.jinja
+    ├── src/{{ project_slug }}/
+    │   ├── __init__.py.jinja
+    │   ├── __main__.py.jinja
+    │   └── main.py.jinja
+    ├── tests/
+    │   └── test_import.py.jinja
+    └── .github/workflows/
+        └── ci.yml.jinja
+terraform/
+├── modules/
+│   └── github_repo/                     # Reusable module: creates one GitHub repo
+│       ├── main.tf
+│       ├── variables.tf
+│       └── outputs.tf
+├── providers.tf                         # Terraform + GitHub provider (App auth)
+└── repo.tf                              # Root entrypoint: variables + module call
+tests/
+└── test_template.py                     # Integration tests for Copier templates
 docs/
-└── ai-instructions.md            # ← you are here
-CONTRIBUTING.md                   # Branching, merging, commit, and linting conventions
-README.md                         # Instructions for developers
+└── ai-instructions.md                   # ← you are here
+pyproject.toml                           # Python dev/test dependencies (copier, pytest)
+Makefile                                 # Developer shortcuts
+CONTRIBUTING.md                          # Branching, merging, commit, and linting conventions
+README.md                                # Instructions for developers
 ```
 
 ## Code Style & Conventions
@@ -78,17 +107,33 @@ Do this as part of the same change that adds the first file of that type.
 
 ### Installing dependencies
 
-TODO: add installation instructions
+```bash
+# Install Python + Terraform versions defined in .mise.toml
+mise install
+
+# Install Python dev/test dependencies (copier, pytest)
+make install   # equivalent to: pip install -e ".[dev]"
+```
 
 ### Developer commands (Makefile)
 
 ```bash
-# TODO: add make commands
+make help        # list all targets with descriptions
+make test        # run template integration tests with pytest
+make lint        # format + validate Terraform; ruff-check Python tests
+make tf-init     # initialise Terraform providers
+make tf-fmt      # format all .tf files in-place
+make tf-validate # validate Terraform config (no credentials needed)
+make tf-plan     # preview changes (requires TF_VAR_* environment variables)
 ```
 
 ### Adding dependencies
 
-TODO: describe dependencies
+- **Python test/dev**: add to `[project.optional-dependencies] dev` in `pyproject.toml`.
+- **Terraform providers**: add to `required_providers` in `terraform/providers.tf` and
+  run `make tf-init` to update the lock file.
+- **Copier template Python deps**: add to `[project.optional-dependencies] dev` in
+  `templates/python-app/pyproject.toml.jinja`.
 
 ## AI Behavior Guidelines
 
