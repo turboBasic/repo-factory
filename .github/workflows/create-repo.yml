@@ -32,10 +32,10 @@ jobs:
 
     steps:
       - name: Checkout repo-factory
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Install uv
-        uses: astral-sh/setup-uv@v5
+        uses: astral-sh/setup-uv@v7
         with:
           # Keep in sync with .mise.toml python version.
           python-version: "3.14"
@@ -45,7 +45,7 @@ jobs:
         run: uv tool install "copier>=9"
 
       - name: Set up Terraform
-        uses: hashicorp/setup-terraform@v3
+        uses: hashicorp/setup-terraform@v4
         with:
           # Keep in sync with .mise.toml terraform version.
           terraform_version: "1.14.7"
