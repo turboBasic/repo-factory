@@ -1,0 +1,68 @@
+name: Create Repository
+
+on:
+  workflow_dispatch:
+    inputs:
+      template:
+        description: "Copier template to use"
+        required: true
+        default: python-app
+        type: choice
+        options:
+          - python-app
+      repo_name:
+        description: "New repository name (e.g. my-service)"
+        required: true
+        type: string
+      description:
+        description: "Short repository description (optional)"
+        required: false
+        type: string
+        default: ""
+
+jobs:
+  create-repo:
+    name: "Create ${{ inputs.repo_name }}"
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    permissions:
+      # Only needs to read this repository's contents.
+      contents: read
+
+    steps:
+      - name: Checkout repo-factory
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          # Keep in sync with .mise.toml python version.
+          python-version: "3.14"
+
+      - name: Install Copier
+        # Install as a uv tool so the `copier` binary is available on PATH.
+        run: uv tool install "copier>=9"
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          # Keep in sync with .mise.toml terraform version.
+          terraform_version: "1.14.7"
+
+      - name: Configure git identity
+        run: |
+          git config --global user.name  "repo-factory[bot]"
+          git config --global user.email "repo-factory[bot]@users.noreply.github.com"
+
+      - name: Create repository
+        env:
+          # GitHub App credentials — stored as repository or organisation secrets.
+          REPO_AUTOMATION_APP_ID: ${{ secrets.REPO_AUTOMATION_APP_ID }}
+          REPO_AUTOMATION_APP_INSTALLATION_ID: ${{ secrets.REPO_AUTOMATION_APP_INSTALLATION_ID }}
+          REPO_AUTOMATION_APP_PRIVATE_KEY: ${{ secrets.REPO_AUTOMATION_APP_PRIVATE_KEY }}
+        run: |
+          bash scripts/create_repo.sh \
+            "${{ inputs.template }}" \
+            "${{ inputs.repo_name }}" \
+            "${{ inputs.description }}"

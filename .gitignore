@@ -49,6 +49,14 @@ terraform.tfvars
 *.tfstate
 *.tfstate.*
 *.tfplan
+# Note: .terraform.lock.hcl should be committed — it pins provider versions.
+
+# ── repo-factory generated output ─────────────────────────────────────────────
+# Temporary directory where create_repo.sh renders Copier output before pushing
+tmp/
+
+# Copier answers file (written when running copier interactively)
+.copier-answers.yml
 
 # ── Secrets & local config ────────────────────────────────────────────────────
 .env

@@ -1,0 +1,29 @@
+# Copy this file to terraform.tfvars and fill in the values.
+# terraform.tfvars is gitignored — never commit real credentials.
+
+# ── GitHub App credentials ────────────────────────────────────────────────────
+
+github_app_id              = "123456"
+github_app_installation_id = "78901234"
+
+# Paste the full PEM content, including the header and footer lines.
+github_app_private_key = <<-EOT
+  -----BEGIN RSA PRIVATE KEY-----
+  ...
+  -----END RSA PRIVATE KEY-----
+EOT
+
+# GitHub account or organisation that will own the repository.
+github_owner = "your-account-or-org"
+
+# ── Repository settings ───────────────────────────────────────────────────────
+
+repo_name   = "my-new-service"
+description = "Short description of the repository"
+
+# "private" or "public"
+visibility = "private"
+
+# Set to true only when github_owner is an organisation.
+# Creates <repo>-admins and <repo>-contributors teams.
+create_teams = false

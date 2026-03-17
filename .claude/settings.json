@@ -11,7 +11,11 @@
       "Bash(uv lock:*)",
       "Bash(uv run ruff check:*)",
       "Bash(uv run ruff format --check:*)",
-      "Bash(uv sync:*)"
+      "Bash(uv sync:*)",
+      "Bash(pre-commit run:*)",
+      "Bash(pre-commit install:*)",
+      "Bash(pre-commit clean:*)",
+      "Bash(pre-commit autoupdate:*)"
     ],
     "deny": [
       "Bash(rm:*)",

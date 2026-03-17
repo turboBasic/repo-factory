@@ -39,6 +39,7 @@ Makefile    text eol=lf
 uv.lock     text eol=lf
 
 # ── Config & data ─────────────────────────────────────────────────────────────
+.pymarkdown text eol=lf
 *.cfg       text eol=lf
 *.conf      text eol=lf
 *.ini       text eol=lf
@@ -48,6 +49,9 @@ uv.lock     text eol=lf
 *.xml       text eol=lf
 *.csv       text eol=lf
 *.tsv       text eol=lf
+
+# ── Copier / Jinja2 templates ─────────────────────────────────────────────────
+*.jinja     text eol=lf
 
 # ── Documentation ─────────────────────────────────────────────────────────────
 *.md        text eol=lf

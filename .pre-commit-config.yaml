@@ -1,4 +1,11 @@
 repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.11.2
+    hooks:
+      - id: ruff-format
+      - id: ruff
+        args: [--fix]
+
   - repo: https://github.com/adrienverge/yamllint
     rev: v1.38.0
     hooks:
@@ -9,7 +16,10 @@ repos:
     hooks:
       - id: pymarkdown
         args:
+          - --config
+          - .pymarkdown
           - scan
+        exclude: ^\.claude/skills/[^/]+/SKILL\.md$
 
   - repo: https://github.com/shellcheck-py/shellcheck-py
     rev: v0.11.0.1
@@ -19,4 +29,4 @@ repos:
   - repo: https://github.com/biomejs/pre-commit
     rev: v2.4.7
     hooks:
-      - id: biome-ci
+      - id: biome-check
