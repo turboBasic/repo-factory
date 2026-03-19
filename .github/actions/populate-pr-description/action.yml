@@ -1,0 +1,39 @@
+name: Populate PR Description
+description: >
+  Renders .github/PULL_REQUEST_TEMPLATE.md as a Jinja2 template, substituting
+  {{ description }} with commit subjects and {{ changes }} with full commit messages,
+  then patches the PR body via the GitHub API.
+
+inputs:
+  github-token:
+    description: Token with pull-requests:write permission
+    required: true
+  pr-number:
+    description: Pull request number
+    required: true
+  repo:
+    description: Repository in OWNER/NAME format
+    required: true
+  base-sha:
+    description: Base commit SHA of the PR
+    required: true
+  head-sha:
+    description: Head commit SHA of the PR
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Install Jinja2
+      run: pip install jinja2 --quiet
+      shell: bash
+
+    - name: Render and update PR description
+      env:
+        GH_TOKEN: ${{ inputs.github-token }}
+        BASE_SHA: ${{ inputs.base-sha }}
+        HEAD_SHA: ${{ inputs.head-sha }}
+        PR_NUMBER: ${{ inputs.pr-number }}
+        REPO: ${{ inputs.repo }}
+      shell: bash
+      run: python "${{ github.action_path }}/populate.py"

@@ -1,0 +1,96 @@
+# ── Python ────────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyd
+*.pyo
+*.so
+*.egg
+*.egg-info/
+.eggs/
+dist/
+build/
+pip-wheel-metadata/
+MANIFEST
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Testing & coverage
+.pytest_cache/
+robot-results/
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
+.tox/
+.nox/
+nosetests.xml
+*.cover
+
+# Type checking
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.pytype/
+.pyre/
+
+# Linting / formatting caches
+.ruff_cache/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# ── Terraform ─────────────────────────────────────────────────────────────────
+.terraform/
+terraform.tfvars
+*.tfstate
+*.tfstate.*
+*.tfplan
+# Note: .terraform.lock.hcl should be committed — it pins provider versions.
+
+# ── repo-factory generated output ─────────────────────────────────────────────
+# Temporary directory where create_repo.sh renders Copier output before pushing
+tmp/
+
+# Copier answers file (written when running copier interactively)
+.copier-answers.yml
+
+# ── Secrets & local config ────────────────────────────────────────────────────
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+
+# ── IDEs ──────────────────────────────────────────────────────────────────────
+# JetBrains (PyCharm, etc.) — commit .idea/ only if the whole team agrees
+.idea/
+
+# VS Code — keep local settings untracked while allowing shared workspace settings
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+.vscode/settings.local.json
+
+# ── Operating systems ─────────────────────────────────────────────────────────
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+
+# ── Logs & databases ──────────────────────────────────────────────────────────
+*.log
+*.sqlite3
+*.db
