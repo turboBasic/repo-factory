@@ -1,0 +1,16 @@
+{
+  "recommendations": [
+    "arahata.linter-actionlint",
+    "codezombiech.gitignore",
+    "editorconfig.editorconfig",
+    "github.copilot-chat",
+    "github.vscode-github-actions",
+    "hashicorp.terraform",
+    "ms-python.python",
+    "ms-vscode.makefile-tools",
+    "redhat.vscode-yaml",
+    "samuelcolvin.jinjahtml",
+    "tamasfe.even-better-toml",
+    "vivaxy.vscode-conventional-commits"
+  ]
+}

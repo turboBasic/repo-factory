@@ -1,0 +1,10 @@
+[tools]
+python = "3.14"
+terraform = "1.14.7"
+uv = "0.10.12"
+
+[settings]
+# Explicitly select the non-freethreaded precompiled build.
+# Mise 2026.3.9 was incorrectly defaulting to the freethreaded variant, which
+# is missing the lib/ directory and causes installation to fail.
+python.precompiled_flavor = "install_only_stripped"
