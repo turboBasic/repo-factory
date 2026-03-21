@@ -37,8 +37,97 @@ jobs:
       contents: read
 
     steps:
+      - name: Validate inputs and prepare environment
+        shell: bash
+        env:
+          INPUT_TEMPLATE: ${{ inputs.template }}
+          INPUT_REPO_NAME: ${{ inputs.repo_name }}
+          INPUT_DESCRIPTION: ${{ inputs.description }}
+          INPUT_GITHUB_ORG: ${{ inputs.github_org }}
+          REPOSITORY_OWNER: ${{ github.repository_owner }}
+        run: |
+          set -euo pipefail
+
+          fail() {
+            echo "ERROR: $1" >&2
+            exit 1
+          }
+
+          require_single_line() {
+            local label="$1"
+            local value="$2"
+            if [[ "${value}" == *$'\n'* || "${value}" == *$'\r'* ]]; then
+              fail "${label} must be a single line."
+            fi
+          }
+
+          require_single_line "repo_name" "${INPUT_REPO_NAME}"
+          require_single_line "description" "${INPUT_DESCRIPTION}"
+          require_single_line "github_org" "${INPUT_GITHUB_ORG}"
+
+          if [[ -z "${INPUT_REPO_NAME}" ]]; then
+            fail "repo_name cannot be empty."
+          fi
+          if [[ "${#INPUT_REPO_NAME}" -gt 100 ]]; then
+            fail "repo_name must be 100 characters or fewer."
+          fi
+          if [[ ! "${INPUT_REPO_NAME}" =~ ^[A-Za-z0-9._-]+$ ]]; then
+            fail "repo_name must contain only letters, numbers, dot, underscore, or hyphen."
+          fi
+
+          github_owner="${INPUT_GITHUB_ORG:-${REPOSITORY_OWNER}}"
+          is_personal_owner="false"
+          if [[ "${github_owner}" == "${REPOSITORY_OWNER}" ]]; then
+            is_personal_owner="true"
+          fi
+
+          {
+            echo "INPUT_TEMPLATE=${INPUT_TEMPLATE}"
+            echo "INPUT_REPO_NAME=${INPUT_REPO_NAME}"
+            echo "INPUT_DESCRIPTION<<__DESCRIPTION__"
+            printf '%s\n' "${INPUT_DESCRIPTION}"
+            echo "__DESCRIPTION__"
+            echo "IS_PERSONAL_OWNER=${is_personal_owner}"
+            echo "TF_VAR_github_owner=${github_owner}"
+          } >> "${GITHUB_ENV}"
+
       - name: Checkout repo-factory
         uses: actions/checkout@v6
+
+      - name: Generate GitHub App token
+        id: app-token
+        if: ${{ inputs.github_org != '' && inputs.github_org != github.repository_owner }}
+        uses: actions/create-github-app-token@v3
+        with:
+          app-id: ${{ vars.REPO_AUTOMATION_APP_ID }}
+          private-key: ${{ secrets.REPO_AUTOMATION_APP_PRIVATE_KEY }}
+          owner: ${{ inputs.github_org != '' && inputs.github_org || github.repository_owner }}
+
+      - name: Resolve and validate automation token
+        shell: bash
+        env:
+          PERSONAL_TOKEN: ${{ secrets.REPO_AUTOMATION_PAT }}
+          APP_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: |
+          set -euo pipefail
+
+          if [[ "${IS_PERSONAL_OWNER}" == "true" ]]; then
+            token="${PERSONAL_TOKEN:-}"
+          else
+            token="${APP_TOKEN:-}"
+          fi
+
+          if [[ -z "${token}" ]]; then
+            echo "ERROR: Repository automation token is empty." >&2
+            exit 1
+          fi
+
+          echo "::add-mask::${token}"
+          {
+            echo "REPO_AUTOMATION_TOKEN<<__TOKEN__"
+            printf '%s\n' "${token}"
+            echo "__TOKEN__"
+          } >> "${GITHUB_ENV}"
 
       - name: Install uv
         uses: astral-sh/setup-uv@v7
@@ -46,9 +135,9 @@ jobs:
           # Keep in sync with .mise.toml python version.
           python-version: "3.14"
 
-      - name: Install Copier
-        # Install as a uv tool so the `copier` binary is available on PATH.
-        run: uv tool install "copier>=9"
+      - name: Install Python dependencies
+        # Pull Copier from pyproject dev dependencies to avoid duplicated version pins.
+        run: uv sync
 
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v4
@@ -56,41 +145,17 @@ jobs:
           # Keep in sync with .mise.toml terraform version.
           terraform_version: "1.14.7"
 
-      - name: Generate GitHub App token
-        id: app-token
-        # if: ${{ inputs.github_org != '' && inputs.github_org != github.repository_owner }}
-        uses: actions/create-github-app-token@v3
-        with:
-          app-id: ${{ vars.REPO_AUTOMATION_APP_ID }}
-          private-key: ${{ secrets.REPO_AUTOMATION_APP_PRIVATE_KEY }}
-          owner: ${{ inputs.github_org != '' && inputs.github_org || github.repository_owner }}
-
       - name: Create repository
         env:
-          IS_PERSONAL_OWNER: ${{ inputs.github_org == '' || inputs.github_org == github.repository_owner }}
-          # Root-level Terraform variable for owner. Use workflow input if provided,
-          # otherwise fall back to the repository owner that runs this workflow.
-          TF_VAR_github_owner: ${{ inputs.github_org != '' && inputs.github_org || github.repository_owner }}
           # Attribute first commits to bot.
           GIT_AUTHOR_NAME: repo-factory[bot]
           GIT_AUTHOR_EMAIL: repo-factory[bot]@users.noreply.github.com
           GIT_COMMITTER_NAME: repo-factory[bot]
           GIT_COMMITTER_EMAIL: repo-factory[bot]@users.noreply.github.com
         run: |
-          if [[ "${IS_PERSONAL_OWNER}" == "true" ]]; then
-            # Personal owner path: GitHub App tokens cannot create /user/repos.
-            export REPO_AUTOMATION_TOKEN="${{ secrets.REPO_AUTOMATION_PAT }}"
-          else
-            # Organisation path: use short-lived GitHub App installation token.
-            export REPO_AUTOMATION_TOKEN="${{ steps.app-token.outputs.token }}"
-          fi
+          set -euo pipefail
 
-          if [[ -z "${REPO_AUTOMATION_TOKEN}" ]]; then
-            echo "ERROR: Repository automation token is empty." >&2
-            exit 1
-          fi
-
-          bash scripts/create_repo.sh \
-            "${{ inputs.template }}" \
-            "${{ inputs.repo_name }}" \
-            "${{ inputs.description }}"
+          uv run --no-sync bash scripts/create_repo.sh \
+            "${INPUT_TEMPLATE}" \
+            "${INPUT_REPO_NAME}" \
+            "${INPUT_DESCRIPTION}"
