@@ -1,13 +1,11 @@
 <!-- pyml disable md041 -->
 ## Description
 
-<!-- Briefly describe what this PR does and why. -->
+{{ description }}
 
 ## Changes
 
-<!-- List the main changes. -->
-
-- Change 1
+{{ changes }}
 
 ## Testing
 

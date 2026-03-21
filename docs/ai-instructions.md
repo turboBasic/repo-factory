@@ -31,10 +31,16 @@
 ├── settings.json
 └── skills/                              # Shared AI skills
 .github/
+├── actions/
+│   └── populate-pr-description/         # Composite action: render PR template from commits
+│       ├── action.yml
+│       └── populate.py
 ├── workflows/
 │   ├── conventional-commits.yml         # PR title / commit message validation
-│   └── create-repo.yml                  # Manually triggered repo-factory workflow
-└── PULL_REQUEST_TEMPLATE.md
+│   ├── create-repo.yml                  # Manually triggered repo-factory workflow
+│   ├── lint-workflows.yml               # Validates GitHub Actions workflow files
+│   └── populate-pr-description.yml      # Auto-populates PR body on open / push
+└── PULL_REQUEST_TEMPLATE.md             # Jinja2 template; rendered by populate-pr-description
 scripts/
 └── create_repo.sh                       # Orchestrates Copier → Terraform → git push
 templates/
