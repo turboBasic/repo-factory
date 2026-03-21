@@ -1,4 +1,4 @@
-name: Create Repository
+name: "🚀 Create Repository"
 
 on:
   workflow_dispatch:

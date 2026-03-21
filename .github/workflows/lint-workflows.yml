@@ -1,4 +1,4 @@
-name: Lint GitHub workflows
+name: "On PR & push: Lint Workflows"
 
 on:
   push:
