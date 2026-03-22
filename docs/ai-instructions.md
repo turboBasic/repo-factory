@@ -38,7 +38,7 @@
 ├── workflows/
 │   ├── conventional-commits.yml         # PR title / commit message validation
 │   ├── create-repo.yml                  # Manually triggered repo-factory workflow
-│   ├── lint-workflows.yml               # Validates GitHub Actions workflow files
+│   ├── lint.yml                         # Runs pre-commit on changed files (all linters)
 │   └── populate-pr-description.yml      # Auto-populates PR body on open / push
 └── PULL_REQUEST_TEMPLATE.md             # Jinja2 template; rendered by populate-pr-description
 scripts/
@@ -68,7 +68,7 @@ tests/
 └── test_template.py                     # Integration tests for Copier templates
 docs/
 └── ai-instructions.md                   # ← you are here
-pyproject.toml                           # Python dev/test dependencies (copier, pytest)
+pyproject.toml                           # Python dev/test dependencies
 Makefile                                 # Developer shortcuts
 CONTRIBUTING.md                          # Branching, merging, commit, and linting conventions
 README.md                                # Instructions for developers
@@ -124,20 +124,15 @@ make install   # equivalent to: uv sync
 ### Developer commands (Makefile)
 
 ```bash
-make help        # list all targets with descriptions
-make test        # run template integration tests with pytest
-make lint        # format + validate Terraform; ruff-check Python tests
-make tf-init     # initialise Terraform providers
-make tf-fmt      # format all .tf files in-place
-make tf-validate # validate Terraform config (no credentials needed)
-make tf-plan     # preview changes (requires TF_VAR_* environment variables)
+make help   # list all targets with descriptions
+make test   # run template integration tests with pytest
+make lint   # run all linters via pre-commit
 ```
 
 ### Adding dependencies
 
 - **Python test/dev**: run `uv add --dev <package>` (updates `pyproject.toml` and `uv.lock`) or edit `[dependency-groups] dev` in `pyproject.toml` then run `uv sync`.
-- **Terraform providers**: add to `required_providers` in `terraform/providers.tf` and
-  run `make tf-init` to update the lock file.
+- **Terraform providers**: add to `required_providers` in `terraform/providers.tf` and run `terraform init` to update the lock file.
 - **Copier template Python deps**: add to `[project.optional-dependencies] dev` in
   `templates/python-app/pyproject.toml.jinja`.
 
@@ -148,9 +143,7 @@ make tf-plan     # preview changes (requires TF_VAR_* environment variables)
 - **Formatting and linting**: after modifying any source file, always run the formatter
   and linter for the affected file type and fix any issues your change introduced before
   finishing:
-  - **Terraform** — `make tf-fmt` (format in-place) then `make tf-validate`
-  - **Python** — `make lint-py` (ruff check)
-  - **All files** — `make lint` (runs all of the above)
+  - **All files** — `make lint` (runs all pre-commit hooks: ruff, yamllint, shellcheck, actionlint, terraform_fmt, terraform_validate, …)
   - If unrelated pre-existing issues remain, call them out clearly but do not fix them
     unless asked
 - **No secrets**: never generate tokens, passwords, or credentials — use GitHub Actions secrets
