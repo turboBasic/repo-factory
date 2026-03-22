@@ -15,9 +15,17 @@ dependencies = []
 package = false
 
 [dependency-groups]
-dev = [
+lint = [
+    "pre-commit",
+    "ruff==0.15.6",
+]
+test = [
     "copier>=9",
     "pytest>=8",
+]
+dev = [
+    { include-group = "lint" },
+    { include-group = "test" },
 ]
 
 [tool.pytest.ini_options]
