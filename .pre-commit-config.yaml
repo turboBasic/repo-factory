@@ -3,7 +3,7 @@ repos:
     rev: v0.15.6
     hooks:
       - id: ruff-format
-      - id: ruff
+      - id: ruff-check
         args: [--fix]
 
   - repo: https://github.com/adrienverge/yamllint
@@ -35,3 +35,9 @@ repos:
     rev: v1.7.11
     hooks:
       - id: actionlint
+
+  - repo: https://github.com/antonbabenko/pre-commit-terraform
+    rev: v1.105.0
+    hooks:
+      - id: terraform_fmt
+      - id: terraform_validate
