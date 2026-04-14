@@ -15,18 +15,9 @@ dependencies = []
 package = false
 
 [dependency-groups]
-lint = [
-    "pre-commit",
-    "ruff==0.15.6",
-]
-test = [
-    "copier>=9",
-    "pytest>=9.0.3",
-]
-dev = [
-    { include-group = "lint" },
-    { include-group = "test" },
-]
+lint = ["mypy==1.15.0", "pre-commit", "ruff==0.15.6"]
+test = ["copier>=9", "pytest>=9.0.3"]
+dev = [{ include-group = "lint" }, { include-group = "test" }]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
@@ -48,3 +39,6 @@ select = [
     "UP",   # pyupgrade (modernise syntax for target Python)
     "W",    # pycodestyle warnings
 ]
+
+[tool.mypy]
+ignore_missing_imports = true
