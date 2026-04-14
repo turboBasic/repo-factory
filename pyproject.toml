@@ -21,7 +21,7 @@ lint = [
 ]
 test = [
     "copier>=9",
-    "pytest>=8",
+    "pytest>=9.0.3",
 ]
 dev = [
     { include-group = "lint" },
