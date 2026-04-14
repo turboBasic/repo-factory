@@ -1,0 +1,31 @@
+version: "0.2"
+
+language: en-GB
+
+ignorePaths:
+  - ".git/**"
+
+dictionaryDefinitions:
+  - name: project-words
+    path: .cspell/custom-dictionary-workspace.txt
+    addWords: true
+
+dictionaries:
+  - bash
+  - en_US
+  - git
+  - html
+  - markdown
+  - project-words
+  - python
+  - shell
+  - softwareTerms
+  - terraform
+
+words: []
+ignoreWords: []
+
+overrides:
+  # Treat gitconfig templates as ini/properties
+  - filename: "**/*.gitconfig*"
+    languageId: properties

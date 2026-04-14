@@ -1,0 +1,12 @@
+# Custom Dictionary Words
+
+commitlint
+dunder
+importability
+linters
+modernise
+Perflint
+pymarkdown
+pyupgrade
+stdlib
+testpaths
