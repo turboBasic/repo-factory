@@ -1,3 +1,5 @@
+# cspell:ignore allfiles
+
 name: "On PR & push: Lint project"
 
 on:

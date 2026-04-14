@@ -1,3 +1,5 @@
+# cspell:words freethreaded precompiled_flavor
+
 [tools]
 python = "3.14"
 terraform = "1.14.7"

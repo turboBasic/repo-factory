@@ -136,7 +136,7 @@ make lint   # run all linters via pre-commit
 - **Copier template Python deps**: add to `[project.optional-dependencies] dev` in
   `templates/python-app/pyproject.toml.jinja`.
 
-## AI Behavior Guidelines
+## AI Behaviour Guidelines
 
 - **Minimal changes**: prefer targeted edits over large refactors unless explicitly asked
 - **Follow existing patterns**: read the surrounding code before suggesting changes

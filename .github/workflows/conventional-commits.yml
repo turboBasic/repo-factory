@@ -1,3 +1,5 @@
+# cspell:ignore amannn wagoid
+
 name: "On PR & push: Conventional Commits"
 
 on:

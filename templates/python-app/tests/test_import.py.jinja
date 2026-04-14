@@ -3,6 +3,8 @@ import importlib
 import sys
 from pathlib import Path
 
+# cspell:ignore capsys readouterr
+
 # Make src/ importable when running pytest without an editable install.
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
