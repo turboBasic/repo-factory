@@ -113,7 +113,8 @@ git commit -m "chore: initial project scaffold from repo-factory/${TEMPLATE}"
 # Embed the token in the URL so git can push without an interactive credential prompt.
 AUTH_CLONE_URL="${CLONE_URL/https:\/\//https://x-access-token:${REPO_AUTOMATION_TOKEN}@}"
 git remote add origin "${AUTH_CLONE_URL}"
-git push --set-upstream origin main
+sleep 5
+GIT_CURL_VERBOSE=1 git push --set-upstream origin main
 
 echo ""
 echo "Done!  New repository: ${CLONE_URL}"
