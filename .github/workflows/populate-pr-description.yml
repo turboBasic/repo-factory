@@ -22,7 +22,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: ./.github/actions/populate-pr-description
+      - uses: turboBasic/github-actions/actions/populate-pr-description@v2
         with:
           github-token: ${{ github.token }}
           pr-number: ${{ github.event.pull_request.number }}
