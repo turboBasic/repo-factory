@@ -1,31 +1,15 @@
 name: "On PR: Populate PR Description"
 
+# `opened` only: the capability renders into the body as it stands, and declines rather than
+# overwriting one written without the substitution points.
 on:
   pull_request:
     types:
       - opened
-      - synchronize
-      - reopened
 
 jobs:
   populate-pr-description:
-    name: Populate PR description from commits
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-
     permissions:
       contents: read
       pull-requests: write
-
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - uses: turboBasic/github-actions/actions/populate-pr-description@v2
-        with:
-          github-token: ${{ github.token }}
-          pr-number: ${{ github.event.pull_request.number }}
-          repo: ${{ github.repository }}
-          base-sha: ${{ github.event.pull_request.base.sha }}
-          head-sha: ${{ github.event.pull_request.head.sha }}
+    uses: turboBasic/github-actions/.github/workflows/pr-description.yml@v0.1
