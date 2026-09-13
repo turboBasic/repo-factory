@@ -1,11 +1,11 @@
 <!-- pyml disable md041 -->
 ## Description
 
-{{ description }}
+<!-- pr-description:summary -->
 
 ## Changes
 
-{{ changes }}
+<!-- pr-description:changes -->
 
 ## Testing
 
